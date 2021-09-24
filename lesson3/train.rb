@@ -1,6 +1,6 @@
 class Train
   attr_accessor :speed
-  attr_reader :railway_carriages, :current_station
+  attr_reader :railway_carriages
 
   def initialize(number, type, railway_carriages)
     @number = number
@@ -8,7 +8,7 @@ class Train
     @railway_carriages = railway_carriages
     @speed = 0
     @route = nil
-    @current_station = nil
+    @current_station_index = nil
   end
 
   def stop
@@ -16,45 +16,39 @@ class Train
   end
 
   def add_railway_carriage
-    if @speed == 0
-      @railway_carriages += 1
-    else
-      puts "Скорость поезда выше 0"
-    end
+    @railway_carriages += 1 if @speed.zero?
   end
 
   def remove_railway_carriage
-    if @speed == 0
-      @railway_carriages -= 1
-    else
-      puts "Скорость поезда выше 0"
-    end
+    @railway_carriages -= 1 if @speed.zero?
   end
 
   def assign_route(route)
-    #поместить поезд на первую станцию в маршруте
-    @stations = route.stations
-    @count = 0
-    @current_station = @stations[@count]
+    @route = route
+    @current_station_index = 0
+    current_station = @route.get_station_by_index(@current_station_index)
+    current_station.receive_train(self)
   end
 
   def go_ahead
-    # + 1 станция вперед по маршруту
-    @count += 1
-    @current_station = @stations[@count]
+    @current_station_index += 1
+    next_station
   end
 
   def go_back
-    # - 1 станция назад по маршруту
-    @count -= 1
-    @current_station = @stations[@count]
+    @current_station_index -= 1
+    previous_station
   end
 
   def next_station
-    @stations[@count+1]
+    @route.get_station_by_index(@current_station_index + 1)
   end
 
   def previous_station
-    @stations[@count-1]
+    @route.get_station_by_index(@current_station_index - 1)
+  end
+
+  def current_station
+    @route.get_station_by_index(@current_station_index)
   end
 end

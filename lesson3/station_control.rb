@@ -38,7 +38,7 @@ puts train.railway_carriages
 station_murmansk.receive_train(train)
 puts station_murmansk.trains
 
-puts station_murmansk.get_trains_by_type('pass')
+puts station_murmansk.pass_trains
 
 puts route_1.get_station_by_index(1)
 

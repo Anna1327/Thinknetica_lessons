@@ -2,8 +2,6 @@ class Route
   attr_reader :stations
 
   def initialize(start_station, finish_station)
-    @start_station = start_station
-    @finish_station = finish_station
     @stations = [start_station, finish_station]
   end
 
@@ -16,6 +14,6 @@ class Route
   end
 
   def get_station_by_index(index)
-    return @stations[index]
+    @stations[index]
   end
 end
