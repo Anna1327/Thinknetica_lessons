@@ -8,7 +8,7 @@ class Train
     @railway_carriages = railway_carriages
     @speed = 0
     @route = nil
-    @current_station_index = nil
+    @current_station_index = 0
   end
 
   def stop
@@ -25,27 +25,38 @@ class Train
 
   def assign_route(route)
     @route = route
-    @current_station_index = 0
     current_station = @route.get_station_by_index(@current_station_index)
     current_station.receive_train(self)
   end
 
   def go_ahead
+    return unless next_station
+    current_station = @route.get_station_by_index(@current_station_index)
+    current_station.depart_train(self)
+    current_station = next_station
     @current_station_index += 1
-    next_station
+    current_station.receive_train(self)
   end
 
   def go_back
+    return unless previous_station
+    current_station = @route.get_station_by_index(@current_station_index)
+    current_station.depart_train(self)
+    current_station = previous_station
     @current_station_index -= 1
-    previous_station
+    current_station.receive_train(self)
   end
 
   def next_station
-    @route.get_station_by_index(@current_station_index + 1)
+    if @current_station_index < @route.stations.size - 1
+      @route.get_station_by_index(@current_station_index + 1)
+    end
   end
 
   def previous_station
-    @route.get_station_by_index(@current_station_index - 1)
+    unless @current_station_index.zero?
+      @route.get_station_by_index(@current_station_index - 1)
+    end
   end
 
   def current_station

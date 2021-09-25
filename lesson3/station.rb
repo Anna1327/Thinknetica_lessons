@@ -19,10 +19,10 @@ class Station
   end
 
   def pass_trains
-    get_trains_by_type('pass')          
+    get_trains_by_type('passenger')          
   end
 
   def gruz_trains
-    get_trains_by_type('gruz')          
+    get_trains_by_type('freight')          
   end
 end

@@ -8,8 +8,8 @@ station_saint_p = Station.new("Saint-Petersburg")
 station_vologda = Station.new("Vologda")
 station_bologoe = Station.new("Bologoe")
 
-train = Train.new('236', 'pass', 8)
-train_2 = Train.new('137', 'pass', 6)
+train = Train.new('236', 'passenger', 8)
+train_2 = Train.new('137', 'passenger', 6)
 
 route_1 = Route.new(station_murmansk, station_moscow)
 route_2 = Route.new(station_saint_p, station_moscow)
