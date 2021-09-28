@@ -1,6 +1,6 @@
 class Train
   attr_accessor :speed
-  attr_reader :railway_carriages
+  attr_reader :railway_carriages, :type
 
   def initialize(number, type, railway_carriages)
     @number = number
@@ -8,7 +8,6 @@ class Train
     @railway_carriages = railway_carriages
     @speed = 0
     @route = nil
-    @current_station_index = 0
   end
 
   def stop
@@ -25,6 +24,7 @@ class Train
 
   def assign_route(route)
     @route = route
+    @current_station_index = 0
     current_station = @route.get_station_by_index(@current_station_index)
     current_station.receive_train(self)
   end
@@ -33,7 +33,6 @@ class Train
     return unless next_station
     current_station = @route.get_station_by_index(@current_station_index)
     current_station.depart_train(self)
-    current_station = next_station
     @current_station_index += 1
     current_station.receive_train(self)
   end
@@ -42,7 +41,6 @@ class Train
     return unless previous_station
     current_station = @route.get_station_by_index(@current_station_index)
     current_station.depart_train(self)
-    current_station = previous_station
     @current_station_index -= 1
     current_station.receive_train(self)
   end
