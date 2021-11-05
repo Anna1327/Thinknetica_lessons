@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Station
   attr_reader :trains
 
@@ -5,7 +7,7 @@ class Station
     @name = name
     @trains = []
   end
-  
+
   def receive_train(train)
     @trains << train
   end
@@ -15,14 +17,14 @@ class Station
   end
 
   def get_trains_by_type(type)
-    @trains.select { |train| train.type == type }            
+    @trains.select { |train| train.type == type }
   end
 
   def pass_trains
-    get_trains_by_type('passenger')          
+    get_trains_by_type('passenger')
   end
 
   def gruz_trains
-    get_trains_by_type('freight')          
+    get_trains_by_type('freight')
   end
 end
