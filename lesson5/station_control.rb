@@ -1,45 +1,43 @@
-# require_relative 'station'
-# require_relative 'route'
-# require_relative 'train'
+# frozen_string_literal: true
 
-# station_murmansk = Station.new("Murmanks")
-# station_moscow = Station.new("Moscow")
-# station_saint_p = Station.new("Saint-Petersburg")
-# station_vologda = Station.new("Vologda")
-# station_bologoe = Station.new("Bologoe")
+require_relative 'station'
+require_relative 'route'
+require_relative 'train'
 
-# train = Train.new('236', 'passenger', 8)
-# train_2 = Train.new('137', 'passenger', 6)
+station_murmansk = Station.new('Murmanks')
+station_moscow = Station.new('Moscow')
+station_saint_p = Station.new('Saint-Petersburg')
 
-# route_1 = Route.new(station_murmansk, station_moscow)
-# route_2 = Route.new(station_saint_p, station_moscow)
+train = Train.new('236', 'passenger', 8)
+train2 = Train.new('137', 'passenger', 6)
 
-# train.assign_route(route_1)
-# train_2.assign_route(route_2)
+route1 = Route.new(station_murmansk, station_moscow)
+route2 = Route.new(station_saint_p, station_moscow)
 
-# puts train.current_station
-# puts train_2.current_station
+train.assign_route(route1)
+train2.assign_route(route2)
 
-# route_1.add_station(station_saint_p)
+puts train.current_station
+puts train2.current_station
 
-# puts train.next_station
-# puts train.previous_station
+route1.add_station(station_saint_p)
 
-# train.go_ahead
-# puts train.current_station
+puts train.next_station
+puts train.previous_station
 
-# train.speed = 80
-# train.remove_railway_carriage
-# puts train.railway_carriages
-# train.stop
-# train.add_railway_carriage
-# puts train.railway_carriages
+train.go_ahead
+puts train.current_station
 
-# station_murmansk.receive_train(train)
-# puts station_murmansk.trains
+train.speed = 80
+train.remove_railway_carriage
+puts train.railway_carriages
+train.stop
+train.add_railway_carriage
+puts train.railway_carriages
 
-# puts station_murmansk.pass_trains
+station_murmansk.receive_train(train)
+puts station_murmansk.trains
 
-# puts route_1.get_station_by_index(1)
+puts station_murmansk.pass_trains
 
-
+puts route1.get_station_by_index(1)
