@@ -1,12 +1,14 @@
-#3 числа фибонначи от 1 до 100
+# frozen_string_literal: true
+
+# 3 fibonacci numbers from 1 to 100
 new_arr = []
-count, num = 1, 0
-def fib(n)
-	return n <= 1 ? n : fib(n - 1) + fib(n - 2)
+count = 1
+def fib(number)
+  number <= 1 ? number : fib(number - 1) + fib(number - 2)
 end
 while fib(count) < 101
-	num = fib(count)
-	count += 1
-	new_arr << num
+  num = fib(count)
+  count += 1
+  new_arr << num
 end
 puts new_arr

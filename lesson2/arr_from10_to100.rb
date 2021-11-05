@@ -1,11 +1,13 @@
-#2 заполнить массив числами от 10 до 100 с шагом 5
+# frozen_string_literal: true
+
+# 2 fill the array with numbers from 10 to 100 with a step of 5
 new_arr = []
 count = 10
 range = (1..100)
-for i in range 
-	if count < 101
-		new_arr << count
-		count += 5
-	end
+range.each do |_i|
+  if count < 101
+    new_arr << count
+    count += 5
+  end
 end
 puts new_arr

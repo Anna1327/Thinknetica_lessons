@@ -1,12 +1,12 @@
-#4 заполнить хеш гласными буквами
-a = ['a', 'e', 'i', 'o', 'u', 'y']
+# frozen_string_literal: true
+
+# 4 fill hash with vowels
+a = %w[a e i o u y]
 b = ('a'..'z')
 h = {}
 count = 1
-for i in b
-	if a.include?(i)
-		h[i] = count
-	end
-	count += 1
+b.each do |i|
+  h[i] = count if a.include?(i)
+  count += 1
 end
 puts h
