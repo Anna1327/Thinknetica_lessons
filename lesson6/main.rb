@@ -135,7 +135,7 @@ class RailRoad
     puts "Станция #{st.name} создана" if st
   end
 
-  def check_attempts(number)
+  def check_attempts(number, e)
     number += 1
     if number < 5
       puts "Введите валидные данные:#{e.message}"
@@ -285,8 +285,6 @@ class RailRoad
     train = check_train
     route = check_route
     return if !route || !train
-    puts "покажи поезд #{train}"
-    puts "покажи маршрут #{route}"
     current_station = train.assign_route(route)
     station = find_station(current_station)
     station.receive_train(train)
