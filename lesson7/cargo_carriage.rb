@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative 'railway_carriage'
 
 class CargoCarriage < RailwayCarriage
-
-  def initialize(total_place, type = "cargo")
+  def initialize(total_place, type = 'cargo')
     @total_place = total_place
     @used_place = 0
     super
@@ -14,6 +15,6 @@ class CargoCarriage < RailwayCarriage
   end
 
   def validation!(volume)
-    raise "Для выполнения операции не хватает объема" if @used_place + volume > @total_place
+    raise 'Для выполнения операции не хватает объема' if @used_place + volume > @total_place
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'module_instance_counter'
 
 class Route
@@ -26,13 +28,13 @@ class Route
   def valid?(station)
     validation!(station)
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
-  def validation!(station)
-    raise "Не указана начальная или конечная станция маршрута!" if @stations.size < 2
+  def validation!(_station)
+    raise 'Не указана начальная или конечная станция маршрута!' if @stations.size < 2
   end
 end

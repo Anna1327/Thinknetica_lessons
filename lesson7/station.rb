@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'module_instance_counter'
 
 class Station
@@ -5,20 +7,19 @@ class Station
 
   attr_reader :trains, :name
 
-  @@stations = []
-
   def self.all
-    @@stations
+    @stations
   end
 
   def initialize(name)
+    @stations = []
     register_instance
-    @@stations << self
+    @stations << self
     @name = name
     @trains = []
     validation!
   end
-  
+
   def receive_train(train)
     @trains << train
   end
@@ -28,31 +29,31 @@ class Station
   end
 
   def get_trains_by_type(type)
-    @trains.select { |train| train.type == type }            
+    @trains.select { |train| train.type == type }
   end
 
   def pass_trains
-    get_trains_by_type('passenger')          
+    get_trains_by_type('passenger')
   end
 
   def cargo_trains
-    get_trains_by_type('cargo')          
+    get_trains_by_type('cargo')
   end
 
-  def block_trains
-    @trains.each { |train| yield(train) }
+  def block_trains(&block)
+    @trains.each(&block)
   end
 
   def valid?
     validation!
     true
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
   def validation!
-    raise "Не заполнено название станции!" unless self.name
+    raise 'Не заполнено название станции!' unless name
   end
 end

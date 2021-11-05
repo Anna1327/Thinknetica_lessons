@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'module_instance_counter'
 require_relative 'module_company'
 
@@ -7,21 +9,20 @@ class Train
   attr_accessor :speed, :number
   attr_reader :railway_carriages, :type, :route
 
-  @@trains = []
-
-  NUMBER_FORMAT = /^[\w\d]{3}-?[\w\d]{2}$/
+  NUMBER_FORMAT = /^[\w\d]{3}-?[\w\d]{2}$/.freeze
 
   def self.find(number)
-    @@trains.select { |train| train.number == number }
+    @trains.select { |train| train.number == number }
   end
 
   def self.all
-    @@trains
+    @trains
   end
 
   def initialize(number, type)
+    @trains = []
     register_instance
-    @@trains << self
+    @trains << self
     @number = number
     @type = type
     @railway_carriages = []
@@ -51,26 +52,24 @@ class Train
 
   def go_ahead
     return unless next_station
+
     @current_station_index += 1
     @route.get_station_by_index(@current_station_index)
   end
 
   def go_back
     return unless previous_station
+
     @current_station_index -= 1
     @route.get_station_by_index(@current_station_index)
   end
 
   def next_station
-    if @current_station_index < @route.stations.size - 1
-      @route.get_station_by_index(@current_station_index + 1)
-    end
+    @route.get_station_by_index(@current_station_index + 1) if @current_station_index < @route.stations.size - 1
   end
 
   def previous_station
-    unless @current_station_index.zero?
-      @route.get_station_by_index(@current_station_index - 1)
-    end
+    @route.get_station_by_index(@current_station_index - 1) unless @current_station_index.zero?
   end
 
   def current_station
@@ -84,24 +83,25 @@ class Train
   def valid?
     validation!
     true
-  rescue
+  rescue StandardError
     false
   end
 
-  def block_carriages
-    @carriages.each { |carriage| yield(carriage) }
+  def block_carriages(&block)
+    @carriages.each(&block)
   end
 
   protected
 
   def validation!
-    raise "Неверная длина номера! Номер должен содержать от 5 до 6 символов" if self.number.length > 6 || self.number.length < 5
-    raise "Неверный формат номера! Номер должен соответствовать формату XXX-XX или XXXXX" if number !~ NUMBER_FORMAT
-    raise "Неверный тип поезда! Тип должен соответствовать значению passenger или cargo" if self.type != 'passenger' && self.type != 'cargo'
+    raise 'Номер должен содержать от 5 до 6 символов' if number.length > 6 || number.length < 5
+    raise 'Номер должен соответствовать формату XXX-XX или XXXXX' if number !~ NUMBER_FORMAT
+    raise 'Тип должен соответствовать значению passenger или cargo' if type != 'passenger' && type != 'cargo'
   end
 
   def add_carriage!(carriage)
-    raise "Тип вагона должен быть #{self.type}." if carriage.type != self.type
+    raise "Тип вагона должен быть #{type}." if carriage.type != type
+
     @carriages << carriage
   end
 end

@@ -1,5 +1,6 @@
-module CompanyCreator
+# frozen_string_literal: true
 
+module CompanyCreator
   attr_reader :company
 
   def assign_company(company)
