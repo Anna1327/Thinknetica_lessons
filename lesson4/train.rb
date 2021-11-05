@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Train
   attr_accessor :speed, :number
   attr_reader :railway_carriages, :type, :route
@@ -30,26 +32,24 @@ class Train
 
   def go_ahead
     return unless next_station
+
     @current_station_index += 1
     @route.get_station_by_index(@current_station_index)
   end
 
   def go_back
     return unless previous_station
+
     @current_station_index -= 1
     @route.get_station_by_index(@current_station_index)
   end
 
   def next_station
-    if @current_station_index < @route.stations.size - 1
-      @route.get_station_by_index(@current_station_index + 1)
-    end
+    @route.get_station_by_index(@current_station_index + 1) if @current_station_index < @route.stations.size - 1
   end
 
   def previous_station
-    unless @current_station_index.zero?
-      @route.get_station_by_index(@current_station_index - 1)
-    end
+    @route.get_station_by_index(@current_station_index - 1) unless @current_station_index.zero?
   end
 
   def current_station
