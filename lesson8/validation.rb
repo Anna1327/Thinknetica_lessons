@@ -9,9 +9,9 @@ module Validation
   module ClassMethods
     attr_reader :data
 
-    def validate(name, type, *args)
+    def validate(variable, type, *args)
       @data ||= []
-      @data.push([name, type, args])
+      @data.push([variable, type, args])
     end
   end
 
@@ -23,31 +23,31 @@ module Validation
     end
 
     def validate!
-      self.class.data.each do |name, type, args|
-        validate_presence(name, type, args) if type == :presence
-        validate_format(name, type, args) if type == :format
-        validate_type(name, type, args) if type == :type
+      self.class.data.each do |variable, type, args|
+        self.class.send(:validate_presence, variable, type, args) if type == :presence
+        self.class.send(:validate_format, variable, type, args) if type == :format
+        self.class.send(:validate_type, variable, type, args) if type == :type
       end
     end
 
     protected
 
-    def validate_presence(name, type, args)
-      raise "Переменная <#{self.class}><#{name}> отсутствует" if instance_variable_get("@#{name}".to_sym).nil?
+    def validate_presence(variable)
+      raise "Переменная <#{self.class}><#{variable}> отсутствует" if instance_variable_get(variable).nil?
     end
 
-    def validate_format(name, type, args)
-      raise "Неверный формат переменной <#{self.class}><#{name}>" unless instance_variable_get("@#{name}".to_sym).match(args[0])
+    def validate_format(variable, args)
+      raise "Неверный формат переменной <#{self.class}><#{variable}>" unless instance_variable_get(variable).match(args[0])
     end
 
-    def validate_type(name, type, args)
-      if instance_variable_get("@#{name}".to_sym).instance_of? Array
-        instance_variable_get("@#{name}".to_sym).each_with_index do |var, index|
-          raise "Неверный тип переменной <#{self.class}><#{name}><#{index}> #{type}." unless var.instance_of? args[0]
+    def validate_type(variable, type, args)
+      if instance_variable_get(variable).instance_of? Array
+        instance_variable_get(variable).each_with_index do |var, index|
+          raise "Неверный тип переменной <#{self.class}><#{variable}><#{index}> #{type}." unless var.instance_of? args[0]
         end
       else
-        unless instance_variable_get("@#{name}".to_sym).instance_of? args[0]
-          raise "Неверный тип переменной <#{self.class}><#{name}>"
+        unless instance_variable_get("@#{variable}".to_sym).instance_of? args[0]
+          raise "Неверный тип переменной <#{self.class}><#{variable}>"
         end
       end
     end
