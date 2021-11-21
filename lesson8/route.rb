@@ -8,7 +8,7 @@ class Route
   include Validation
   attr_reader :stations
 
-  validate :stations, Station
+  validate :type, :stations, String
 
   def initialize(start_station, finish_station)
     register_instance

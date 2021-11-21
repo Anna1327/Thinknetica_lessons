@@ -13,7 +13,7 @@ class Train
 
   NUMBER_FORMAT = /^[\w\d]{3}-?[\w\d]{2}$/.freeze
 
-  validate :number, :format, NUMBER_FORMAT
+  validate :format, :number, NUMBER_FORMAT
 
   def self.find(number)
     @trains.select { |train| train.number == number }
@@ -33,7 +33,7 @@ class Train
     @speed = 0
     @route = nil
     @carriages = []
-    validation!
+    validate!
   end
 
   def stop

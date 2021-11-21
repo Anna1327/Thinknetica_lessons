@@ -9,7 +9,7 @@ class Station
 
   attr_reader :trains, :name
   
-  validate :name, :type, String
+  validate :type, :name, String
 
   def self.all
     @stations
@@ -21,6 +21,7 @@ class Station
     @stations << self
     @name = name
     @trains = []
+    validate!
   end
 
   def receive_train(train)

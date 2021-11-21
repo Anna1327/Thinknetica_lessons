@@ -9,9 +9,9 @@ module Validation
   module ClassMethods
     attr_reader :data
 
-    def validate(variable, type, *args)
+    def validate(type, *args)
       @data ||= []
-      @data.push([variable, type, args])
+      @data.push([type, args])
     end
   end
 
@@ -23,31 +23,29 @@ module Validation
     end
 
     def validate!
-      self.class.data.each do |variable, type, args|
-        self.class.send(:validate_presence, variable, type, args) if type == :presence
-        self.class.send(:validate_format, variable, type, args) if type == :format
-        self.class.send(:validate_type, variable, type, args) if type == :type
+      self.class.data.each do |type, var, args|
+        send("validate_#{type}", var, args)
       end
     end
 
     protected
 
-    def validate_presence(variable)
-      raise "Переменная <#{self.class}><#{variable}> отсутствует" if instance_variable_get(variable).nil?
+    def validate_presence(var, args)
+      raise "Переменная <#{self.class}><#{var}> отсутствует" if instance_variable_get("@#{var[0]}".to_sym).nil?
     end
 
-    def validate_format(variable, args)
-      raise "Неверный формат переменной <#{self.class}><#{variable}>" unless instance_variable_get(variable).match(args[0])
+    def validate_format(var, args)
+      raise "Неверный формат переменной <#{self.class}><#{var}>" unless instance_variable_get("@#{var[0]}".to_sym).match(var[1])
     end
 
-    def validate_type(variable, type, args)
-      if instance_variable_get(variable).instance_of? Array
-        instance_variable_get(variable).each_with_index do |var, index|
-          raise "Неверный тип переменной <#{self.class}><#{variable}><#{index}> #{type}." unless var.instance_of? args[0]
+    def validate_type(var, args)
+      if instance_variable_get("@#{var[0]}".to_sym).instance_of? Array
+        instance_variable_get("@#{var[0]}".to_sym).each do |variable|
+          raise "Неверный тип переменной <#{self.class}><#{variable}>" unless variable.instance_of? var[1]
         end
       else
-        unless instance_variable_get("@#{variable}".to_sym).instance_of? args[0]
-          raise "Неверный тип переменной <#{self.class}><#{variable}>"
+        unless instance_variable_get("@#{var[0]}".to_sym).instance_of? var[1]
+          raise "Неверный тип переменной <#{self.class}><#{var}>"
         end
       end
     end
